@@ -71,10 +71,11 @@ runs:
             base_name=$(basename "$test" "${{ inputs.test_file_postfix }}.rego")
             test_dir=$(dirname "$test")
             impl_file=$(find "$test_dir" "$test_dir/.." -maxdepth 1 -type f -name "${base_name}.rego" | head -n1)
+            mock_file=$(find "$test_dir" "$test_dir/.." -maxdepth 1 -type f -name "${base_name}.mock.json" | head -n1)
             if [ -n "$impl_file" ]; then
                 echo "Found implementation file: $impl_file"
-                test_result=$(opa test -v "$test" "$impl_file" || true)
-                coverage_result=$(opa test --coverage "$test" "$impl_file" "$base_name.mock.json" || true)
+                test_result=$(opa test -v "$test" "$impl_file" "$mock_file" || true)
+                coverage_result=$(opa test --coverage "$test" "$impl_file" || true)
                 test_output+="$test_result"$'\n\n'
                 coverage_output+="$coverage_result"$'\n\n'
             else
