@@ -75,7 +75,7 @@ runs:
             if [ -n "$impl_file" ]; then
                 echo "Found implementation file: $impl_file"
                 test_result=$(opa test -v "$test" "$impl_file" "$mock_file" || true)
-                coverage_result=$(opa test --coverage "$test" "$impl_file" || true)
+                coverage_result=$(opa test --coverage "$test" "$impl_file" "$mock_file" || true)
                 test_output+="$test_result"$'\n\n'
                 coverage_output+="$coverage_result"$'\n\n'
             else
